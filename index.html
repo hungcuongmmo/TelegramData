@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Data Management</title>
+    <style>
+        /* Thêm CSS nếu cần */
+        #myModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+        }
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: #aaa;
+            font-size: 35px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <button id="openModal">Open Modal</button>
+    <div id="myModal">
+        <span class="close">&times;</span>
+        <div>
+            <!-- Nội dung của Modal -->
+            <h2>Modal Content</h2>
+        </div>
+    </div>
+    <table id="localStorageData">
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dữ liệu từ localStorage sẽ được chèn vào đây -->
+        </tbody>
+    </table>
+    <script>
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("openModal");
+        var span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var localStorageTable = document.getElementById('localStorageData').getElementsByTagName('tbody')[0];
+            for (var i = 0; i < localStorage.length; i++) {
+                var key = localStorage.key(i);
+                var value = localStorage.getItem(key);
+                var row = localStorageTable.insertRow();
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                cell1.innerHTML = key;
+                cell2.innerHTML = '<a href="' + value + '" class="open">Mở</a>';
+                var deleteButton = document.createElement("button");
+                deleteButton.setAttribute('class', 'delete');
+                deleteButton.innerHTML = "Xóa";
+                deleteButton.onclick = function () {
+                    var row = this.parentNode.parentNode;
+                    var key = row.cells[0].innerHTML;
+                    localStorage.removeItem(key);
+                    row.remove();
+                };
+                cell3.appendChild(deleteButton);
+            }
+
+            // Open the modal only if the clicked element is not a child of the modal
+            document.getElementById("phantoan116").addEventListener("click", function (event) {
+                if (!modal.contains(event.target)) {
+                    modal.style.display = "block";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
