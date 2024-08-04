@@ -87,174 +87,15 @@
         button:hover {
             background-color: #555;
         }
-    </style>
-</head>
-<body>
-    <header>
-        <h1>Telegram Data Management</h1>
-    </header>
-    <div class="container">
-        <button id="openModal">Open Modal</button>
-        <div id="myModal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Modal Content</h2>
-                <!-- Nội dung của Modal -->
-            </div>
-        </div>
-        <table id="localStorageData">
-            <thead>
-                <tr>
-                    <th>Key</th>
-                    <th>Value</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Dữ liệu từ localStorage sẽ được chèn vào đây -->
-            </tbody>
-        </table>
-    </div>
-    <script>
-        var modal = document.getElementById("myModal");
-        var btn = document.getElementById("openModal");
-        var span = document.getElementsByClassName("close")[0];
 
-        btn.onclick = function () {
-            modal.style.display = "block";
-        }
-
-        span.onclick = function () {
-            modal.style.display = "none";
-        }
-
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            var localStorageTable = document.getElementById('localStorageData').getElementsByTagName('tbody')[0];
-            for (var i = 0; i < localStorage.length; i++) {
-                var key = localStorage.key(i);
-                var value = localStorage.getItem(key);
-                var row = localStorageTable.insertRow();
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                var cell3 = row.insertCell(2);
-                cell1.innerHTML = key;
-                cell2.innerHTML = '<a href="' + value + '" class="open">Mở</a>';
-                var deleteButton = document.createElement("button");
-                deleteButton.setAttribute('class', 'delete');
-                deleteButton.innerHTML = "Xóa";
-                deleteButton.onclick = function () {
-                    var row = this.parentNode.parentNode;
-                    var key = row.cells[0].innerHTML;
-                    localStorage.removeItem(key);
-                    row.remove();
-                };
-                cell3.appendChild(deleteButton);
-            }
-
-            // Open the modal only if the clicked element is not a child of the modal
-            document.getElementById("hungcuongmmo").addEventListener("click", function (event) {
-                if (!modal.contains(event.target)) {
-                    modal.style.display = "block";
-                }
-            });
-        });
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Data Management</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
+        .loading {
             text-align: center;
+            padding: 50px;
         }
 
-        #myModal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0);
-            background-color: rgba(0,0,0,0.4);
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-
-        th {
-            background-color: #333;
-            color: white;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        button {
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #555;
+        .loading img {
+            width: 50px;
+            height: 50px;
         }
     </style>
 </head>
@@ -271,7 +112,11 @@
                 <!-- Nội dung của Modal -->
             </div>
         </div>
-        <table id="localStorageData">
+        <div id="loading" class="loading">
+            <img src="https://i.imgur.com/LLF5iyg.gif" alt="Loading...">
+            <p>Đang tải dữ liệu...</p>
+        </div>
+        <table id="localStorageData" style="display: none;">
             <thead>
                 <tr>
                     <th>Key</th>
@@ -305,28 +150,34 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             var localStorageTable = document.getElementById('localStorageData').getElementsByTagName('tbody')[0];
-            for (var i = 0; i < localStorage.length; i++) {
-                var key = localStorage.key(i);
-                var value = localStorage.getItem(key);
-                var row = localStorageTable.insertRow();
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                var cell3 = row.insertCell(2);
-                cell1.innerHTML = key;
-                cell2.innerHTML = '<a href="' + value + '" class="open">Mở</a>';
-                var deleteButton = document.createElement("button");
-                deleteButton.setAttribute('class', 'delete');
-                deleteButton.innerHTML = "Xóa";
-                deleteButton.onclick = function () {
-                    var row = this.parentNode.parentNode;
-                    var key = row.cells[0].innerHTML;
-                    localStorage.removeItem(key);
-                    row.remove();
-                };
-                cell3.appendChild(deleteButton);
-            }
+            var loadingDiv = document.getElementById('loading');
+            var table = document.getElementById('localStorageData');
 
-            // Open the modal only if the clicked element is not a child of the modal
+            setTimeout(function() {
+                for (var i = 0; i < localStorage.length; i++) {
+                    var key = localStorage.key(i);
+                    var value = localStorage.getItem(key);
+                    var row = localStorageTable.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+                    cell1.innerHTML = key;
+                    cell2.innerHTML = '<a href="' + value + '" class="open">Mở</a>';
+                    var deleteButton = document.createElement("button");
+                    deleteButton.setAttribute('class', 'delete');
+                    deleteButton.innerHTML = "Xóa";
+                    deleteButton.onclick = function () {
+                        var row = this.parentNode.parentNode;
+                        var key = row.cells[0].innerHTML;
+                        localStorage.removeItem(key);
+                        row.remove();
+                    };
+                    cell3.appendChild(deleteButton);
+                }
+                loadingDiv.style.display = 'none';
+                table.style.display = 'table';
+            }, 2000); // Giả sử dữ liệu mất 2 giây để tải
+
             document.getElementById("hungcuongmmo").addEventListener("click", function (event) {
                 if (!modal.contains(event.target)) {
                     modal.style.display = "block";
@@ -336,3 +187,4 @@
     </script>
 </body>
 </html>
+
